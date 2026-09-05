@@ -1,12 +1,19 @@
 """Build the public career blog using only the Python standard library."""
 from pathlib import Path
 from html import escape
+import json
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'docs'
 ORIGIN = 'https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio'
 GH = 'https://github.com/xmhuangzhijun-hue'
 HERMES = 'https://github.com/NousResearch/hermes-agent/pull/'
+CONTACT = json.loads((ROOT / 'content/contact.json').read_text(encoding='utf-8'))
+
+def contact_block(base):
+    phone = CONTACT.get('phone', '')
+    phone_html = f'<a href="tel:{escape(phone, quote=True)}">手机 · {escape(phone)}</a>' if phone else ''
+    return f'''<section class="wrap contact-panel" id="contact"><div><p class="eyebrow">LET’S TALK</p><h2>聊聊你的 AI 产品，<br>也聊聊我能做的事。</h2><p>求职方向：AI 产品经理 / AI 应用开发</p><div class="contact-links"><a href="mailto:{CONTACT['email']}">{CONTACT['email']}</a>{phone_html}<span>微信 · {CONTACT['wechat']}</span></div><p class="contact-hint">添加微信请备注公司或交流主题。</p></div><figure><img src="{base}static/wechat.jpg" alt="XMHUA 的微信二维码，微信号 {CONTACT['wechat']}" width="190" height="190" loading="lazy"><figcaption>扫码添加微信</figcaption></figure></section>'''
 
 def ext(url, label):
     return f'<a href="{url}" target="_blank" rel="noopener noreferrer">{label}<span aria-hidden="true"> ↗</span></a>'
@@ -19,20 +26,25 @@ def page(path, title, description, body, active=''):
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)} · XMHUA</title><meta name="description" content="{escape(description, quote=True)}">
 <meta name="theme-color" content="#f7f9fc"><meta property="og:type" content="{'website' if path == 'index.html' else 'article'}"><meta property="og:title" content="{escape(title, quote=True)} · XMHUA"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:url" content="{ORIGIN}/{path}">
-<link rel="canonical" href="{ORIGIN}/{path}"><link rel="icon" href="{base}static/mark.svg" type="image/svg+xml"><link rel="stylesheet" href="{base}static/site.css"></head>
+<link rel="canonical" href="{ORIGIN}/{path}"><link rel="icon" href="{base}static/mark.svg" type="image/svg+xml"><link rel="stylesheet" href="{base}static/site.css"><link rel="stylesheet" href="{base}static/career.css"></head>
 <body><a class="skip" href="#main">跳到正文</a><header class="site-header"><a class="brand" href="{base}index.html"><img src="{base}static/mark.svg" alt="" width="30" height="30"><span>XMHUA<span class="brand-sub">AI 产品与应用实践</span></span></a><nav aria-label="主导航">{nav}</nav></header>
 <main id="main">{body.replace('@BASE@',base)}</main>
-<footer class="site-footer"><span>© 2026 XMHUA<span class="footer-sub">产品判断 · 工程实现 · 公开记录</span></span><div>{ext(GH,'GitHub')}<a href="{base}about.html">关于与联系</a><a href="{base}notes/index.html">实践笔记</a></div></footer></body></html>'''
+{contact_block(base)}<footer class="site-footer"><span>© 2026 XMHUA<span class="footer-sub">产品判断 · 工程实现 · 公开记录</span></span><div>{ext(GH,'GitHub')}<a href="#contact">联系我</a><a href="{base}notes/index.html">实践笔记</a></div></footer></body></html>'''
     dest = OUT/path
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(full,encoding='utf-8')
 
 projects = [
+    ('blog','AI 协作开发 · 开源产品','把个人博客做成自己每天能用的发布系统。','从展示页面迭代到内容后台、独立 API 和 PostgreSQL；已部署，当前数据库有 61 篇发布文章。','Next.js / Hono / PostgreSQL · 已部署'),
     ('assistant','AI Agent 应用','让一次自然语言请求，走到可确认的任务结果。','从消息入口、工具调用到异常反馈，围绕个人助手开展产品定义、部署与改进。','产品设计 / 工具集成 / 运行验证'),
+    ('shell','Agent 交互 · 开源项目','让手机也能连接自己的 Agent。','为 DeepSeek Harness 制作交互外壳和局域网登录网关，处理页面可见但会话连不上的问题。','TypeScript / TLS / WebSocket · 早期实现'),
     ('memory','Agent 记忆与知识管理','换一个工具，仍能接着上次的工作。','用有来源的项目记录和受控更新，处理上下文丢失、旧结论和记忆污染问题。','上下文设计 / 知识管理 / 验证机制'),
-    ('builder','Agent 创建与发布平台','把创建 Agent 的过程，组织成用户能完成的流程。','从需求描述、知识接入到版本发布，探索面向非技术用户的产品底座。','产品架构 / 知识接入 / 本地实现'),
 ]
 notes = [
+    ('blog-delivery','我的博客 · 上线实践','一个博客，怎样才算真的交付了？','从原博客的部署笔记出发，核对发布内容、数据库和可恢复版本。','5 分钟'),
+    ('project-boundaries','我的博客 · AI 协作','用 AI 做博客时，我怎么定义“做完了”？','把开发流程笔记落到内容编辑、发布状态和前后端分工。','5 分钟'),
+    ('lan-access','我的开源项目 · 工程复盘','页面打开了，为什么手机上的 Agent 还不能用？','ruoxi-shell 中的登录、TLS 与 WebSocket 接入案例。','4 分钟'),
+    ('trace-evaluation','我的开源项目 · 验证','Agent 说“完成了”，我用什么来核对？','把评测笔记缩小成可检查的实验：成功、拒绝、失败与未知。','4 分钟'),
     ('vision-timeout','Agent 工程','图片超时后，为什么继续重试反而延长等待？','从一次已被上游采纳的修复，理解异常体验、重试边界和备用服务。','5 分钟'),
     ('message-order','问题定位','先发的图片，为什么可能后处理？','输入顺序与下载完成顺序不是一回事。一次同会话预处理问题的定位。','4 分钟'),
     ('memory-capture','记忆设计','后台任务的输出，应该进入用户长期记忆吗？','从自动采集边界出发，讨论来源、上下文和记忆污染。','4 分钟'),
@@ -46,14 +58,28 @@ def note_list():
     return ''.join(f'<a class="note-row" href="@BASE@notes/{slug}.html"><span class="note-category">{cat}</span><div><h3>{title}</h3><p>{desc}</p></div><span class="note-time">{length}<span aria-hidden="true"> ↗</span></span></a>' for slug,cat,title,desc,length in notes)
 
 page('index.html','AI 产品与应用实践','XMHUA 的 AI 求职作品集与个人博客：项目案例、实践笔记，以及可核验的 Hermes Agent 开源贡献。',f'''
-<section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="dot"></span> AI 产品 · AI 应用开发 · Agent 工程</p><h1>从真实问题出发，<br>把 AI 做进<span class="accent">产品。</span></h1><p class="hero-lead">你好，我是 XMHUA。<br>我用 AI 推进产品设计与开发，也把过程中的判断、问题和改进写在这里。</p><div class="hero-actions"><a class="button primary" href="#projects">看看我做的项目 <span aria-hidden="true">↓</span></a><a class="text-link" href="notes/index.html">阅读实践笔记 →</a></div></div>
+<section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="dot"></span> XMHUA / AI 产品与应用开发</p><h1>我用 AI 做产品，<br>把<span class="accent">真实问题</span><br>变成可检查的作品。</h1><p class="hero-lead">从自己的博客和个人助手开始：定义需求、协作开发、部署使用，再把遇到的问题修到开源上游。这里是我的项目与实践笔记。</p><div class="hero-actions"><a class="button primary" href="#projects">浏览我的项目 <span aria-hidden="true">↓</span></a><a class="button" href="#contact">联系我 ↗</a></div><p class="hero-contact"><a href="mailto:xmhuangzhijun@gmail.com">xmhuangzhijun@gmail.com</a><span>微信：xmhuangzhijun</span></p></div>
 <aside class="proof-card"><div class="proof-top"><span>一项公开贡献</span><span class="badge">已合入上游</span></div><p class="proof-project">HERMES AGENT</p><h2>让图片超时之后，<br>少一次无效等待。</h2><p>提交视觉请求重试修复，原始贡献由维护者保留作者署名，整合后进入主分支。</p><a class="proof-link" href="notes/vision-timeout.html">读这次改进的来龙去脉 <span aria-hidden="true">↗</span></a><div class="proof-footer">原始贡献 #97572 <span>→</span> 合入 #101570</div></aside></section>
-<section class="wrap section" id="projects"><div class="section-head"><div><p class="eyebrow">SELECTED WORK</p><h2>项目，和背后的判断。</h2></div><p>从用户怎样使用，到系统怎样实现。<br>每个案例都说明我的工作与当前边界。</p></div><div class="project-grid">{project_cards()}</div></section>
+<section class="wrap capability-strip" aria-label="能力与作品"><div><strong>产品定义</strong><span>需求 → 可用流程 → 验收标准</span></div><div><strong>AI 协作开发</strong><span>Web / API / 数据库 / 部署</span></div><div><strong>Agent 改进</strong><span>实际问题 → 测试 → 上游贡献</span></div></section><section class="wrap section" id="projects"><div class="section-head"><div><p class="eyebrow">SELECTED WORK</p><h2>用作品说明，我能做什么。</h2></div><p>每个案例都有具体场景、我的工作、<br>当前结果和可检查的材料。</p></div><div class="project-grid">{project_cards()}</div></section>
 <section class="wrap section notes-section"><div class="section-head"><div><p class="eyebrow">FIELD NOTES</p><h2>把实践写清楚。</h2></div><a class="text-link" href="notes/index.html">全部笔记 →</a></div>{note_list()}</section>
 <section class="wrap open-band"><div><p class="eyebrow">OPEN SOURCE</p><h2>从实际使用，走向公开协作。</h2><p>问题描述、代码变化、测试与合入状态，都保留可追溯的入口。</p></div><a class="button" href="contributions.html">查看开源贡献 ↗</a></section>
 <section class="wrap about-strip"><p>关注真实场景，愿意动手实现，也认真对待失败。</p><a class="text-link" href="about.html">认识我 →</a></section>''','home')
 
 def article(path, kind, title, lead, body, active='notes', aside=''):
+    case_map = {
+        'vision-timeout': ('个人 AI 助手 / Hermes', 'assistant', '原始修复 #97572 → 上游整合 #101570', HERMES+'101570', '上游已采纳'),
+        'message-order': ('个人 AI 助手 / 微信通道', 'assistant', '我提交的同会话预处理修复 #97743', HERMES+'97743', '公开 PR · 尚未合并'),
+        'memory-capture': ('个人 AI 助手 / 长期记忆', 'memory', '我提交的自动捕获边界修复 #97156', HERMES+'97156', '公开 PR · 尚未合并'),
+        'context-handoff': ('我的 Obsidian 项目记录与 Agent 接续', 'memory', '个人实践案例与设计边界', GH+'/ai-product-builder-portfolio/blob/main/docs/agent-shared-memory.md', '个人实践 · 案例说明'),
+        'blog-delivery': ('我自己的博客 / XMHUA Card', 'blog', '部署步骤与真实功能验收标准', GH+'/xmhua-card/blob/master/docs/DEPLOYMENT.md', '已部署项目 · 本次只读核验'),
+        'project-boundaries': ('我自己的博客 / XMHUA Card', 'blog', '内容读取、发布过滤和持久化源码', GH+'/xmhua-card/blob/master/api/src/services/content.ts', '已部署项目 · 公开源码'),
+        'lan-access': ('我的 Agent 交互外壳 / ruoxi-shell', 'shell', '接入结果与复现文档', GH+'/ruoxi-shell#verified-behaviour', '早期开源实现 · 已记录实验'),
+        'trace-evaluation': ('我的 Agent 参考运行时', 'memory', '5 个可独立运行的边界测试', GH+'/organic-agent-os/blob/main/tests/test_runtime.py', '最小实验 · 非完整评测平台'),
+    }
+    slug = Path(path).stem
+    if active == 'notes' and slug in case_map:
+        project, link, evidence, url, stage = case_map[slug]
+        body = f'<section class="case-anchor"><span class="badge neutral">{stage}</span><h2>这篇笔记对应我的哪项实践？</h2><p><a href="../projects/{link}.html">{project} →</a></p><p>{ext(url,evidence)}</p></section>' + body
     page(path,title,lead,f'''<div class="wrap article-shell"><a class="back" href="@BASE@{'notes/index.html' if active=='notes' else 'index.html#projects'}">← {'全部笔记' if active=='notes' else '所有项目'}</a><header class="article-header"><p class="eyebrow">{kind}</p><h1>{title}</h1><p class="article-lead">{lead}</p><div class="article-meta">XMHUA <span>·</span> 整理于 2026 年 9 月 5 日</div></header><div class="article-grid"><article class="prose">{body}</article><aside class="article-aside">{aside or '<p class="eyebrow">阅读提示</p><p>这是结合公开变更与项目实践整理的复盘。源码与讨论链接位于正文中。</p>'}<div class="aside-nav"><a href="@BASE@contributions.html">开源贡献 ↗</a><a href="@BASE@about.html">关于作者 →</a></div></aside></div></div>''',active)
 
 article('projects/assistant.html','PROJECT · AI AGENT','个人 AI 助手：从输入到结果','围绕个人任务，连接自然语言、相关信息与可执行工具。',f'''
@@ -67,9 +93,9 @@ article('projects/assistant.html','PROJECT · AI AGENT','个人 AI 助手：从�
 article('projects/memory.html','PROJECT · CONTEXT & KNOWLEDGE','Agent 记忆：让下一次工作有据可接','处理跨工具、跨会话中的上下文丢失与旧信息误用。',f'''
 <h2>问题从哪里来</h2><p>项目持续迭代时，新的 AI 会话很容易不知道当前版本，重新尝试已经失败的方案，或者把历史记录当成今天的事实。简单地追加一份越来越长的记忆文件，无法自动解决这些问题。</p>
 <h2>我如何拆解</h2><p>我把来源、项目现状、执行记录和候选经验分开考虑。项目代码与当前状态负责说明现在是什么；历史记录帮助理解为什么走到这里；新观察在验证前保留为候选，不能直接覆盖共同事实。</p><div class="flow"><span>明确本次问题</span><b>→</b><span>检索相关依据</span><b>→</b><span>核对当前状态</span><b>→</b><span>执行并记录</span></div>
-<h2>产品判断：记忆要帮助行动</h2><p>我的关注点是下一次任务能否少一次重复交代、避开一条已被否定的路径，并清楚知道还有什么没有完成。内容是否被保存，只能证明存储发生过；能否改善后续行为，才是这套机制需要检验的结果。</p>
+<h2>一个自己的使用案例：接续博客项目</h2><p>我用 Obsidian 保存项目状态与变更记录，让 Codex、Claude Code 等工具接续工作。接手原博客时，旧记录说明曾经发布 57 篇文章；但这次查询实际部署的内容 API，已发布数量是 61。历史帮助找到项目，当前运行结果决定今天能写什么。不能直接把旧摘要当成当前事实。</p><p>同样，已经修改的本地文件不一定已提交，提交的代码也不一定已部署。我要求接续时分别确认这些状态，并保留其他任务正在进行的改动。</p><h2>产品判断：记忆要帮助行动</h2><p>我的关注点是下一次任务能否少一次重复交代、避开一条已被否定的路径，并清楚知道还有什么没有完成。内容是否被保存，只能证明存储发生过；能否改善后续行为，才是这套机制需要检验的结果。</p>
 <h2>两种公开材料，各自说明什么</h2><p>项目案例文档说明本地实践中的分层与工作方式。另一个公开架构仓库提供早期规范和最小参考实现，供他人审阅设计。它尚不能作为完整本地系统已经全部开源的证明，也不代表成熟商用平台。</p>
-<h2>进一步的问题</h2><p>来源相互冲突时如何裁决、信息变化后如何失效、一次经验是否真的改善后续任务，仍然需要持续验证。实践笔记会围绕具体问题展开，而不是仅用“长期记忆”概括所有能力。</p><div class="source-box"><strong>可核验资料</strong>{ext(GH+'/ai-product-builder-portfolio/blob/main/docs/agent-shared-memory.md','公开案例说明')}{ext(GH+'/organic-agent-os','早期架构与参考实现')}<a href="../notes/context-handoff.html">阅读上下文接续笔记 →</a></div>''','projects','<p class="eyebrow">我的工作</p><p>问题与场景拆解<br>记忆分层与来源设计<br>候选更新和校验<br>跨工具协作实践</p><p class="eyebrow">公开范围</p><p>案例文档与早期参考实现；私人知识库不公开。</p>')
+<h2>从个人工作方式到公开实验</h2><p>我公开的 Python 参考运行时把事件、权限检查和终态回执做成了最小实验，测试覆盖成功、拒绝、异常和未知。它提供可运行的检查入口，但尚未实现完整的持久记忆治理和跨 Agent 编排。</p><div class="source-box"><strong>可核验资料</strong>{ext(GH+'/ai-product-builder-portfolio/blob/main/docs/agent-shared-memory.md','公开案例说明')}{ext(GH+'/organic-agent-os','早期架构与参考实现')}<a href="../notes/context-handoff.html">阅读上下文接续笔记 →</a><a href="../notes/trace-evaluation.html">阅读运行时实验与测试 →</a></div>''','projects','<p class="eyebrow">我的工作</p><p>问题与场景拆解<br>记忆分层与来源设计<br>候选更新和校验<br>跨工具协作实践</p><p class="eyebrow">公开范围</p><p>案例文档与早期参考实现；私人知识库不公开。</p>')
 
 article('projects/builder.html','PROJECT · PRODUCT FOUNDATION','Agent 创建平台：从想法到发布流程','面向非技术使用者，探索角色、知识、测试与发布的完整产品流程。',f'''
 <h2>用户要完成什么</h2><p>一个人有了助手的想法，还需要定义角色、接入资料、选择使用入口、检查回答并发布。配置项分散在不同工具中时，用户很难判断自己做到哪一步，也不容易知道哪里出了问题。</p>
@@ -104,9 +130,10 @@ article('notes/memory-capture.html','记忆设计 · 开源复盘','后台任务
 article('notes/context-handoff.html','产品思考 · 项目实践','让两个编码 Agent 接续，需要留下什么？','接续上下文的目的，是帮助下一步行动。',f'''
 <h2>先明确接续要解决的问题</h2><p>新会话需要知道的不只是之前聊过什么，还包括当前项目到哪一步、哪些判断仍有效、什么方案已尝试，以及现在可以安全做什么。完整聊天记录不一定能直接回答这些问题。</p>
 <h2>我如何组织信息</h2><p>我把项目当前状态、行动记录、判断依据与候选经验分开。接手先围绕本次问题取相关材料，再核对代码或当前状态；历史解释原因，当前证据决定下一步。</p>
+<h2>我自己的使用案例</h2><p>接续个人博客时，历史记录写着曾公开 57 篇笔记，本地还有尚未发布的改动。如果直接从历史摘要写求职介绍，就会混淆过去的状态和现在的产品。我的处理方式是：用项目记录定位内容服务，再只读查询已部署 API。本次实际读到 61 篇已发布文章和微信入口，因此展示当前数据，同时保留原记录作为历史。</p><p>这个案例体现的是接续时如何使用依据，而不是一个效率提升的量化实验。私人项目日志不对外提供；博客的公开内容接口与存储代码可在下方仓库检查。</p>
 <h2>一份有用的接续记录</h2><ul><li>任务目标与当前完成状态。</li><li>已经检查到的事实及来源。</li><li>做过的尝试、失败原因和适用条件。</li><li>仍然存在的不确定性与下一步。</li><li>不能修改的范围和需要保留的并发工作。</li></ul>
 <h2>避免把推断升级成事实</h2><p>模型新写下的解释并不天然具有更高权威。需要保留其来源和验证状态，避免一次概括覆盖了原始证据。另一个 Agent 再次读取时，也应该知道它是确认过的结论，还是等待检验的候选。</p>
-<h2>怎样判断有没有帮助</h2><p>我更关注下一次工作是否减少了重复调查，能否避开已知失败路径，而不只是记忆库又增加多少字。评估应回到真实接续任务，也应诚实记录尚未测量的改进。</p><div class="source-box"><strong>相关项目</strong><a href="../projects/memory.html">Agent 记忆与知识管理 →</a>{ext(GH+'/ai-product-builder-portfolio/blob/main/docs/agent-shared-memory.md','公开案例说明')}</div>''')
+<h2>怎样判断有没有帮助</h2><p>我更关注下一次工作是否减少了重复调查，能否避开已知失败路径，而不只是记忆库又增加多少字。评估应回到真实接续任务，也应诚实记录尚未测量的改进。</p><div class="source-box"><strong>相关项目</strong><a href="../projects/memory.html">Agent 记忆与知识管理 →</a>{ext(GH+'/ai-product-builder-portfolio/blob/main/docs/agent-shared-memory.md','公开案例说明')}{ext(GH+'/xmhua-card/blob/master/api/src/routes/public.ts','本例对应的公开内容接口源码')}</div>''')
 
 page('contributions.html','开源贡献','Hermes Agent 的公开修复、作者记录与合入状态。',f'''<section class="wrap listing"><p class="eyebrow">OPEN SOURCE</p><h1>公开贡献，<br>让工作可以被检查。</h1><p class="listing-lead">从实际使用中的问题出发，提交可以讨论、测试与审阅的改进。</p>
 <article class="contribution featured"><div><span class="badge">已被上游采纳</span><h2>视觉请求满预算超时后的重试修复</h2><p>避免在同一服务商上再次耗尽完整等待窗口后，才进入备用路径。原始提交由维护者保留作者署名，经后续 PR 整合并合入主分支。</p></div><div class="contribution-links">{ext(HERMES+'97572','我的原始 PR #97572')}{ext(HERMES+'101570','已合入 PR #101570')}<a href="notes/vision-timeout.html">阅读复盘 →</a></div></article>
@@ -120,4 +147,6 @@ page('about.html','关于我','XMHUA：面向 AI 产品与 AI 应用开发岗位
 
 page('404.html','页面不存在','这个地址没有对应页面。','<section class="wrap listing"><p class="eyebrow">404</p><h1>这篇内容不在这里。</h1><p class="listing-lead">可以回到首页，继续浏览项目与笔记。</p><a class="button primary" href="index.html">返回首页</a></section>')
 (OUT/'.nojekyll').write_text('',encoding='utf-8')
+from portfolio_details import render
+render(page, article, ext, GH, HERMES, note_list)
 print(f'Built {len(list(OUT.rglob("*.html")))} HTML pages.')

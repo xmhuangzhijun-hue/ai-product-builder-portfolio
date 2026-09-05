@@ -1,5 +1,9 @@
 # AI Product Builder Portfolio
 
+**[打开个人博客 · 求职版](https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/)** — 4 个重点项目、8 篇对应个人实践的笔记，以及微信和邮箱联系入口。
+
+求职版内容与维护方式见 [content/README.md](content/README.md)。下方保留较早的完整案例索引，项目当前阶段以网页中的核对说明为准。
+
 > 从真实业务问题出发，用 AI 把模糊需求做成可运行、可验证的产品。
 
 ![AI Product Builder Portfolio](assets/portfolio-map.svg)
