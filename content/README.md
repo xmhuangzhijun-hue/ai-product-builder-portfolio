@@ -6,7 +6,7 @@
 
 页面由 `scripts/build_site.py`、`scripts/portfolio_details.py` 与 `scripts/engineering_portfolio.py` 生成。运行 `python scripts/build_site.py` 后，提交对应源码与 `docs/` 产物，GitHub Pages 从 `main /docs` 发布。
 
-求职方向包含 FDE、AI 产品经理和 AI 应用开发。投放中台（模拟数据原型）与投放数据看板（业务数据链路）分开描述，工作经历只公开框架、职责和脱敏验证，不填未核实的正式职称或任职日期。
+主求职方向为 FDE；AI 产品经理与 AI 应用开发作为延伸方向。投放中台（模拟数据原型）与投放数据看板（业务数据链路）分开描述，工作经历只公开框架、职责和脱敏验证，不填未核实的正式职称或任职日期。
 
 `docs/demo/iaa/` 沿用作者公开的 `xmhuangzhijun-hue/xmhua-card/public/demo/iaa/` 静态演示产物，将入口资源路径改成相对路径以兼容 GitHub Pages，并增加持续可见的模拟数据/占位说明与返回链接。固定模拟数据，不连接生产系统；演示登录不是鉴权实现的证据。重新构建该 Demo 需使用其原始 Vite 工程；博客生成器保留这个已发布产物。
 
@@ -27,3 +27,9 @@
 前三篇学习主题中的博客交付、开发边界和运行时评测，分别重新整理自作者原博客的 `vibe-coding-2`、`vibe-coding`、`agent-golden-tasks`。其余原博客文章未整体迁入本求职版。没有个人应用证据的外部框架分析，不写成已经采用的项目成果。
 
 2026-09-05 通过原博客已部署的只读内容 API 核对到 PostgreSQL 来源、61 篇已发布文章和微信入口。此次只读核对不等于重新完成编辑保存、整机恢复或手机语音验收。原始数据副本、私人日志和内部部署地址不进入公开仓库。
+
+## 搜索与分享维护
+
+`scripts/seo.py` 在构建最后统一 canonical、站内链接、Person/ProfilePage 等 JSON-LD 和 `docs/sitemap.xml`。首页、项目目录和笔记目录使用以 `/` 结尾的 URL；详情页保留 `.html`。旧 index.html 地址仍可访问，canonical 用于指定首选地址，并非服务器重定向。404 与模拟 Demo 不列入站点地图，标记 noindex。
+
+每页分享图清单是 `content/share-cards.json`，由构建器生成；图片已提交到 `docs/static/og/`。变更标题后运行 `python scripts/share_cards.py`（需要 Pillow，默认微软雅黑字体，可用 `--font` 指定支持中文的字体）。常规 HTML 重建不依赖 Pillow，保留已提交的分享图。每张图片为 1200×630 JPG；预览取决于分享客户端的抓取与缓存。二维码保留原始白底图片，提供放大与保存入口。

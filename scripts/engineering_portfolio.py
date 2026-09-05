@@ -79,11 +79,11 @@ def render_engineering(page, article, ext, gh):
 
     page('skills.html','技能与工程能力','按实际项目分类展示数据工程、应用开发、Agent 集成、鉴权部署和产品交付能力。','''<section class="wrap listing"><p class="eyebrow">SKILLS / EVIDENCE</p><h1>技能，放到<span class="accent">实际项目</span>里看。</h1><p class="listing-lead">按做过的工作归类，每项都有对应案例。能力来自 AI 协作开发与实际验证，不以“精通所有技术栈”概括。</p><div class="skill-grid">
 <section><h2>业务分析与 FDE 交付</h2><p>需求拆解、业务对象建模、指标口径、流程原型、验收标准、部署约束与交接。</p><a href="experience.html">投放中台与数据看板 →</a></section>
-<section><h2>数据接入与准确性</h2><p>Python、pandas、Excel；Chrome CDP/结构化响应；字段归一化、重复检测、时间对齐、批次指纹、缺失值语义。</p><a href="projects/data-dashboard.html">无开放接口的数据链路 →</a></section>
-<section><h2>Web 与 API 开发</h2><p>React、TypeScript、Vite、Tailwind；Next.js/Hono；Streamlit/AgGrid、FastAPI；内容管理与异步 API 调用。</p><a href="projects/blog.html">开源内容发布系统 →</a></section>
-<section><h2>数据库与鉴权</h2><p>SQLite/WAL、PostgreSQL/Drizzle；账号登录、密码哈希、Session、租户过滤、角色和数据作用域。</p><a href="projects/data-dashboard.html">服务端数据边界 →</a></section>
-<section><h2>Agent 集成与可靠性</h2><p>Hermes 二次开发、重试与后备路径、同会话异步预处理、自动记忆写入边界、事件与回执。</p><a href="contributions.html">公开修复与合入记录 →</a></section>
-<section><h2>部署、调试与协作</h2><p>Linux/systemd、Nginx/HTTPS、LAN TLS/WebSocket、Git/PR、版本恢复、pytest。Docker/Redis 仅列于本地创建平台探索，未当作投放看板生产成果。</p><a href="projects/shell.html">LAN 网关接入与故障定位 →</a></section></div><div class="editor-note">能力主线：业务理解 → 数据与系统集成 → 应用交付 → 验证和维护。点击各项案例查看具体实现与当前阶段。</div></section>''','skills')
+<section><h2>数据接入与准确性</h2><p>让分散的报表可以一起看，并在数据不完整或口径不一致时及时发现问题。</p><details><summary>技术与实现范围</summary><p>Python、pandas、Excel；Chrome CDP/结构化响应；字段归一化、重复检测、时间对齐、批次指纹、缺失值语义。</p></details><a href="projects/data-dashboard.html">无开放接口的数据链路 →</a></section>
+<section><h2>Web 与 API 开发</h2><p>把需求做成能操作的页面、内容后台和数据服务。</p><details><summary>技术与实现范围</summary><p>React、TypeScript、Vite、Tailwind；Next.js/Hono；Streamlit/AgGrid、FastAPI；内容管理与异步 API 调用。</p></details><a href="projects/blog.html">开源内容发布系统 →</a></section>
+<section><h2>数据库与鉴权</h2><p>让数据持续保存，并让每个人只看到自己有权访问的内容。</p><details><summary>技术与实现范围</summary><p>SQLite/WAL、PostgreSQL/Drizzle；账号登录、密码哈希、Session、租户过滤、角色和数据作用域。</p></details><a href="projects/data-dashboard.html">服务端数据边界 →</a></section>
+<section><h2>Agent 集成与可靠性</h2><p>处理消息乱序、失败重试和后台内容误入记忆等真实使用问题。</p><details><summary>技术与实现范围</summary><p>Hermes 二次开发、重试与后备路径、同会话异步预处理、自动记忆写入边界、事件与回执。</p></details><a href="contributions.html">公开修复与合入记录 →</a></section>
+<section><h2>部署、调试与协作</h2><p>把应用接到实际使用环境，定位访问故障，并留下可恢复的版本。</p><details><summary>技术与实现范围</summary><p>Linux/systemd、Nginx/HTTPS、LAN TLS/WebSocket、Git/PR、版本恢复、pytest。Docker/Redis 仅列于本地创建平台探索，未当作投放看板生产成果。</p></details><a href="projects/shell.html">LAN 网关接入与故障定位 →</a></section></div><div class="editor-note">能力主线：业务理解 → 数据与系统集成 → 应用交付 → 验证和维护。点击各项案例查看具体实现与当前阶段。</div></section>''','skills')
 
     article('evidence/engineering-validation.html','EVIDENCE · 脱敏验证摘要','投放项目：工程能力与证据范围','仅公开验证方法和结果，不公开雇主源码、真实数据、账户、域名或内部接口。','''
 <h2>本次核对范围 · 2026-09-05</h2><p>只读核对了投放数据看板现有代码、依赖与相关项目记录，以及投放中台当前状态、组件结构和已公开的演示产物。未重新访问公司系统、采集业务数据或修改生产服务。</p>

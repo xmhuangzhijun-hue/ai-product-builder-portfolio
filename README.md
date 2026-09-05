@@ -1,6 +1,6 @@
 # AI Product Builder Portfolio
 
-**[打开个人博客 · 求职版](https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/)** — FDE / AI 产品经理 / AI 应用开发：6 个重点项目、9 篇实践笔记、工作经历、技能分类、开源贡献，以及微信和邮箱联系入口。
+**[打开个人博客 · 求职版](https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/)** — 以 FDE 为主方向，延伸 AI 产品定义与应用开发：6 个重点项目、9 篇实践笔记、工作经历、技能分类、开源贡献，以及微信和邮箱联系入口。
 
 [工作项目](https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/experience.html) · [投放中台模拟 Demo](https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/demo/iaa/index.html) · [技能与证据](https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/skills.html)
 

@@ -8,23 +8,25 @@ OUT = ROOT / 'docs'
 ORIGIN = 'https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio'
 GH = 'https://github.com/xmhuangzhijun-hue'
 HERMES = 'https://github.com/NousResearch/hermes-agent/pull/'
+PAGES = {}
 CONTACT = json.loads((ROOT / 'content/contact.json').read_text(encoding='utf-8'))
 
 def contact_block(base):
     phone = CONTACT.get('phone', '')
     phone_html = f'<a href="tel:{escape(phone, quote=True)}">手机 · {escape(phone)}</a>' if phone else ''
-    return f'''<section class="wrap contact-panel" id="contact"><div><p class="eyebrow">LET’S TALK</p><h2>聊聊你的 AI 产品，<br>也聊聊我能做的事。</h2><p>求职方向：FDE（前线部署工程师）/ AI 产品经理 / AI 应用开发</p><div class="contact-links"><a href="mailto:{CONTACT['email']}">{CONTACT['email']}</a>{phone_html}<span>微信 · {CONTACT['wechat']}</span></div><p class="contact-hint">添加微信请备注公司或交流主题。</p></div><figure><img src="{base}static/wechat.jpg" alt="XMHUA 的微信二维码，微信号 {CONTACT['wechat']}" width="190" height="190" loading="lazy"><figcaption>扫码添加微信</figcaption></figure></section>'''
+    return f'''<section class="wrap contact-panel" id="contact"><div><p class="eyebrow">LET’S TALK</p><h2>聊聊你的 AI 产品，<br>也聊聊我能做的事。</h2><p>求职主方向：FDE（Forward Deployed Engineer）</p><p>延伸方向：AI 产品定义与应用开发</p><div class="contact-links"><a href="mailto:{CONTACT['email']}">{CONTACT['email']}</a>{phone_html}<span>微信 · {CONTACT['wechat']}</span></div><p class="contact-hint">添加微信请备注公司或交流主题。</p></div><figure><img src="{base}static/wechat.jpg" alt="XMHUA 的微信二维码，微信号 {CONTACT['wechat']}" width="190" height="190" loading="lazy"><figcaption>扫码添加微信<br><a href="{base}static/wechat.jpg" target="_blank" rel="noopener">查看原图 ↗</a> · <a href="{base}static/wechat.jpg" download="XMHUA-WeChat.jpg">下载二维码</a></figcaption></figure></section>'''
 
 def ext(url, label):
     return f'<a href="{url}" target="_blank" rel="noopener noreferrer">{label}<span aria-hidden="true"> ↗</span></a>'
 
 def page(path, title, description, body, active=''):
+    PAGES[path] = (title, description)
     if path == 'contributions.html':
         from engineering_portfolio import ownership_overview
         body = body.replace('<article class="contribution featured">', ownership_overview()+'<article class="contribution featured">')
     depth = path.count('/')
     base = '../' * depth or './'
-    nav = ''.join(f'<a href="{base}{href}"'+(' aria-current="page"' if key == active else '')+f'>{label}</a>' for key, href, label in [('home','index.html','首页'),('experience','experience.html','经历'),('projects','index.html#projects','项目'),('skills','skills.html','技能'),('notes','notes/index.html','笔记'),('contributions','contributions.html','开源'),('about','about.html','关于')])
+    nav = ''.join(f'<a href="{base}{href}"'+((' aria-current="page"' if path == href else ' aria-current="location"') if key == active else '')+f'>{label}</a>' for key, href, label in [('home','index.html','首页'),('experience','experience.html','经历'),('projects','projects/index.html','项目'),('skills','skills.html','技能'),('notes','notes/index.html','笔记'),('contributions','contributions.html','开源'),('about','about.html','关于')])
     full = f'''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)} · XMHUA</title><meta name="description" content="{escape(description, quote=True)}">
@@ -57,18 +59,28 @@ notes = [
     ('context-handoff','产品思考','让两个编码 Agent 接续，需要留下什么？','把“记住更多”拆成当前事实、判断依据与下一步能采取的行动。','4 分钟'),
 ]
 
+ROLES = {
+ 'data-dashboard': ('数据链路 + 指标口径 + 交付验收', '让运营少踩重复取数和同名指标口径混用的坑。'),
+ 'ad-platform': ('业务建模 + 页面流程 + 前端组件', '在接入真实数据前，把操作方式做成可讨论的原型。'),
+ 'blog': ('内容模型 + 发布流程 + 部署验收', '更新文章与联系方式，不再每次都要修改页面代码。'),
+ 'assistant': ('问题复现 + 修复边界 + 上游提交', '减少图片超时后的重复等待，保护同一会话的消息顺序。'),
+ 'shell': ('交互外壳 + 登录网关 + 连接验证', '解决手机看得到页面、却接不上实时会话的问题。'),
+ 'memory': ('接续规则 + 来源分层 + 回执设计', '让下一个 Agent 有据可接，避免把旧摘要当成当前事实。'),
+}
+
 def project_cards():
-    return ''.join(f'<a class="project-card" href="@BASE@projects/{slug}.html"><div class="card-label">{name}<span aria-hidden="true">↗</span></div><h3>{title}</h3><p>{desc}</p><div class="card-bottom">{tags}</div></a>' for slug,name,title,desc,tags in projects)
+    return ''.join(f'<a class="project-card" href="@BASE@projects/{slug}.html"><div class="card-label">{name}<span aria-hidden="true">↗</span></div><h3>{title}</h3><p>{ROLES[slug][1]}</p><p class="role-tag">我的主责：{ROLES[slug][0]}</p><div class="card-bottom">{tags}</div></a>' for slug,name,title,desc,tags in projects)
+
 
 def note_list():
-    return ''.join(f'<a class="note-row" href="@BASE@notes/{slug}.html"><span class="note-category">{cat}</span><div><h3>{title}</h3><p>{desc}</p></div><span class="note-time">{length}<span aria-hidden="true"> ↗</span></span></a>' for slug,cat,title,desc,length in notes)
+    return ''.join(f'<a class="note-row" href="@BASE@notes/{slug}.html"><span class="note-category">{cat}</span><div><h3>{title}</h3><p>{desc}</p></div><span class="note-time">约 {length}<span aria-hidden="true"> ↗</span></span></a>' for slug,cat,title,desc,length in notes)
 
-page('index.html','AI 产品与应用实践','XMHUA 的 AI 求职作品集与个人博客：项目案例、实践笔记，以及可核验的 Hermes Agent 开源贡献。',f'''
-<section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="dot"></span> FDE · AI 产品经理 · AI 应用开发</p><h1>走进业务现场，<br>把<span class="accent">数据和 AI</span><br>接进实际工作。</h1><p class="hero-lead">我是 XMHUA。从投放中台的业务建模，到网页取数、数据校验与云端看板，再到 Agent 应用和开源修复：我负责理解问题，借助 AI 推进实现，并检查交付结果。</p><div class="hero-actions"><a class="button primary" href="experience.html">看我的工作项目 <span aria-hidden="true">↗</span></a><a class="button" href="#contact">联系我 ↗</a></div><p class="hero-contact"><a href="mailto:xmhuangzhijun@gmail.com">xmhuangzhijun@gmail.com</a><span>微信：xmhuangzhijun</span></p></div>
+page('index.html','FDE 求职作品集与工程实践','XMHUA 的 AI 求职作品集与个人博客：项目案例、实践笔记，以及可核验的 Hermes Agent 开源贡献。',f'''
+<section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="dot"></span> FDE / Forward Deployed Engineer</p><h1>走进业务现场，<br>把<span class="accent">数据和 AI</span><br>接进实际工作。</h1><p class="hero-lead">我是 XMHUA，主攻业务现场的系统集成与可维护交付，也做 AI 产品定义与应用开发。从投放中台的业务建模，到网页取数、数据校验与云端看板，再到 Agent 应用和开源修复：我负责理解问题，借助 AI 推进实现，并检查交付结果。</p><div class="hero-actions"><a class="button primary" href="experience.html">看我的工作项目 <span aria-hidden="true">↗</span></a><a class="button" href="#contact">联系我 ↗</a></div><p class="hero-contact"><a href="mailto:xmhuangzhijun@gmail.com">xmhuangzhijun@gmail.com</a><span>微信：xmhuangzhijun</span></p></div>
 <aside class="proof-card"><div class="proof-top"><span>一项公开贡献</span><span class="badge">已合入上游</span></div><p class="proof-project">HERMES AGENT</p><h2>让图片超时之后，<br>少一次无效等待。</h2><p>提交视觉请求重试修复，原始贡献由维护者保留作者署名，整合后进入主分支。</p><a class="proof-link" href="notes/vision-timeout.html">读这次改进的来龙去脉 <span aria-hidden="true">↗</span></a><div class="proof-footer">原始贡献 #97572 <span>→</span> 合入 #101570</div></aside></section>
 <section class="wrap capability-strip" aria-label="能力与作品"><div><strong>产品定义</strong><span>需求 → 可用流程 → 验收标准</span></div><div><strong>AI 协作开发</strong><span>Web / API / 数据库 / 部署</span></div><div><strong>Agent 改进</strong><span>实际问题 → 测试 → 上游贡献</span></div></section><section class="wrap section" id="projects"><div class="section-head"><div><p class="eyebrow">SELECTED WORK</p><h2>用作品说明，我能做什么。</h2></div><p>每个案例都有具体场景、我的工作、<br>当前结果和可检查的材料。</p></div><div class="project-grid">{project_cards()}</div></section>
+<section class="wrap proof-band"><div><p class="eyebrow">OPEN SOURCE / 第三方可核验</p><h2>一项原始修复，被 Hermes 上游采纳。</h2><p>我提交 #97572 → 维护者保留署名整合 → #101570 合入主分支。</p></div><div><a class="button primary" href="notes/vision-timeout.html">阅读修复复盘 ↗</a><a class="text-link" href="contributions.html">原始 PR、合入记录与待审提交 →</a></div></section>
 <section class="wrap section notes-section"><div class="section-head"><div><p class="eyebrow">FIELD NOTES</p><h2>把实践写清楚。</h2></div><a class="text-link" href="notes/index.html">全部笔记 →</a></div>{note_list()}</section>
-<section class="wrap open-band"><div><p class="eyebrow">OPEN SOURCE</p><h2>从实际使用，走向公开协作。</h2><p>问题描述、代码变化、测试与合入状态，都保留可追溯的入口。</p></div><a class="button" href="contributions.html">查看开源贡献 ↗</a></section>
 <section class="wrap about-strip"><p>关注真实场景，愿意动手实现，也认真对待失败。</p><a class="text-link" href="about.html">认识我 →</a></section>''','home')
 
 def article(path, kind, title, lead, body, active='notes', aside=''):
@@ -160,4 +172,9 @@ from portfolio_details import render
 render(page, article, ext, GH, HERMES, note_list)
 from engineering_portfolio import render_engineering
 render_engineering(page, article, ext, GH)
+
+page('projects/index.html','项目与我的职责','工作项目、自有开源与上游二次开发，附具体职责、源码或脱敏验证材料。',f'<section class="wrap listing"><p class="eyebrow">SELECTED WORK</p><h1>项目，和我负责的部分。</h1><p class="listing-lead">从业务问题、实现取舍到结果；每个案例注明归属与证据范围。</p><div class="project-grid">{project_cards()}</div></section>','projects')
+from seo import finalize
+finalize(OUT, PAGES)
+
 print(f'Built {len(list(OUT.rglob("*.html")))} HTML pages.')

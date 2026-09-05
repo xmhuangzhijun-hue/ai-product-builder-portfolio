@@ -1,0 +1,177 @@
+[
+  {
+    "path": "index.html",
+    "title": "FDE 求职作品集与工程实践",
+    "description": "FDE 求职作品集：业务集成、数据质量与 Agent 应用交付，附 Hermes 上游采纳记录。",
+    "image": "static/og/index.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/"
+  },
+  {
+    "path": "projects/assistant.html",
+    "title": "个人 AI 助手：从输入到结果",
+    "description": "Hermes 二次开发：视觉重试、消息顺序与记忆边界；附原始 PR 和上游采纳记录。",
+    "image": "static/og/projects-assistant.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/projects/assistant.html"
+  },
+  {
+    "path": "projects/memory.html",
+    "title": "Agent 记忆：让下一次工作有据可接",
+    "description": "项目记忆接续与 Agent 参考运行时；附公开案例、4 类终态和 5 个边界测试。",
+    "image": "static/og/projects-memory.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/projects/memory.html"
+  },
+  {
+    "path": "projects/builder.html",
+    "title": "Agent 创建平台：从想法到发布流程",
+    "description": "Agent 创建与发布的本地底座探索；附流程设计、技术选择和当前实现边界。",
+    "image": "static/og/projects-builder.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/projects/builder.html"
+  },
+  {
+    "path": "notes/index.html",
+    "title": "实践笔记",
+    "description": "每篇笔记对应我自己的项目、使用场景或开源实验。",
+    "image": "static/og/notes-index.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/notes/"
+  },
+  {
+    "path": "notes/vision-timeout.html",
+    "title": "图片超时后，为什么继续重试反而延长等待？",
+    "description": "一次被 Hermes 上游采纳的视觉请求重试修复。 附对应个人案例与可检查材料。",
+    "image": "static/og/notes-vision-timeout.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/notes/vision-timeout.html"
+  },
+  {
+    "path": "notes/message-order.html",
+    "title": "先发的图片，为什么可能后处理？",
+    "description": "输入顺序正确，并不保证后续处理顺序正确。 附对应个人案例与可检查材料。",
+    "image": "static/og/notes-message-order.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/notes/message-order.html"
+  },
+  {
+    "path": "notes/memory-capture.html",
+    "title": "后台任务的输出，应该进入用户长期记忆吗？",
+    "description": "保存之前，先问这条信息来自谁、发生在什么上下文。 附对应个人案例与可检查材料。",
+    "image": "static/og/notes-memory-capture.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/notes/memory-capture.html"
+  },
+  {
+    "path": "notes/context-handoff.html",
+    "title": "让两个编码 Agent 接续，需要留下什么？",
+    "description": "接续上下文的目的，是帮助下一步行动。 附对应个人案例与可检查材料。",
+    "image": "static/og/notes-context-handoff.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/notes/context-handoff.html"
+  },
+  {
+    "path": "contributions.html",
+    "title": "开源贡献",
+    "description": "Hermes Agent 的公开修复、作者记录与合入状态。",
+    "image": "static/og/contributions.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/contributions.html"
+  },
+  {
+    "path": "about.html",
+    "title": "关于与联系",
+    "description": "XMHUA 的求职方向、个人贡献、项目入口与直接联系方式。",
+    "image": "static/og/about.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/about.html"
+  },
+  {
+    "path": "404.html",
+    "title": "页面不存在",
+    "description": "这个地址没有对应页面。",
+    "image": "static/og/404.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/404.html"
+  },
+  {
+    "path": "projects/blog.html",
+    "title": "我自己的博客：从展示页，到内容发布系统",
+    "description": "个人博客的内容后台、独立 API 与 PostgreSQL；附开源实现和 61 篇发布文章核对说明。",
+    "image": "static/og/projects-blog.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/projects/blog.html"
+  },
+  {
+    "path": "projects/shell.html",
+    "title": "让手机也能连接自己的 Agent",
+    "description": "Agent 手机交互外壳与 LAN 登录网关；附公开源码及 401、403、101 连接实验记录。",
+    "image": "static/og/projects-shell.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/projects/shell.html"
+  },
+  {
+    "path": "notes/blog-delivery.html",
+    "title": "一个博客，怎样才算真的交付了？",
+    "description": "原博客的上线笔记讲可观察、可恢复；我把它对应到自己正在使用的内容发布系统。 附对应个人案例与可检查材料。",
+    "image": "static/og/notes-blog-delivery.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/notes/blog-delivery.html"
+  },
+  {
+    "path": "notes/project-boundaries.html",
+    "title": "用 AI 做博客时，我怎么定义“做完了”？",
+    "description": "把开发流程中的范围、架构与验收，落到我自己的内容产品中。 附对应个人案例与可检查材料。",
+    "image": "static/og/notes-project-boundaries.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/notes/project-boundaries.html"
+  },
+  {
+    "path": "notes/lan-access.html",
+    "title": "页面打开了，为什么手机上的 Agent 还不能用？",
+    "description": "我的 ruoxi-shell 接入案例：页面加载、登录和实时会话连接，需要分别核对。 附对应个人案例与可检查材料。",
+    "image": "static/og/notes-lan-access.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/notes/lan-access.html"
+  },
+  {
+    "path": "notes/trace-evaluation.html",
+    "title": "Agent 说“完成了”，我用什么来核对？",
+    "description": "将原博客的 Agent 评测笔记，对应到自己公开的最小运行时实验。 附对应个人案例与可检查材料。",
+    "image": "static/og/notes-trace-evaluation.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/notes/trace-evaluation.html"
+  },
+  {
+    "path": "projects/data-dashboard.html",
+    "title": "投放数据看板：把网页报表接成可信的数据链路",
+    "description": "无开放 API 时的授权网页取数、数据校验与看板交付；附 23 项本地专项测试摘要。",
+    "image": "static/og/projects-data-dashboard.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/projects/data-dashboard.html"
+  },
+  {
+    "path": "projects/ad-platform.html",
+    "title": "投放中台：先让业务流程可以被操作和讨论",
+    "description": "投放中台的业务模型与 React 原型；附可操作的固定模拟数据 Demo，注明未完成范围。",
+    "image": "static/og/projects-ad-platform.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/projects/ad-platform.html"
+  },
+  {
+    "path": "experience.html",
+    "title": "工作经历与项目职责",
+    "description": "脱敏展示数字营销业务中的投放中台与投放数据看板项目。",
+    "image": "static/og/experience.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/experience.html"
+  },
+  {
+    "path": "skills.html",
+    "title": "技能与工程能力",
+    "description": "按实际项目分类展示数据工程、应用开发、Agent 集成、鉴权部署和产品交付能力。",
+    "image": "static/og/skills.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/skills.html"
+  },
+  {
+    "path": "evidence/engineering-validation.html",
+    "title": "投放项目：工程能力与证据范围",
+    "description": "仅公开验证方法和结果，不公开雇主源码、真实数据、账户、域名或内部接口。",
+    "image": "static/og/evidence-engineering-validation.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/evidence/engineering-validation.html"
+  },
+  {
+    "path": "notes/data-quality.html",
+    "title": "没有开放 API 时，如何避免“抓到了，但抓错了”？",
+    "description": "我在投放数据看板中遇到的分页和 BI 补数问题，以及对应的校验方法。 附对应个人案例与可检查材料。",
+    "image": "static/og/notes-data-quality.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/notes/data-quality.html"
+  },
+  {
+    "path": "projects/index.html",
+    "title": "项目与我的职责",
+    "description": "工作项目、自有开源与上游二次开发，附具体职责、源码或脱敏验证材料。",
+    "image": "static/og/projects-index.jpg",
+    "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/projects/"
+  }
+]
