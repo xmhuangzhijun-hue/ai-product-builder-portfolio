@@ -68,18 +68,21 @@ ROLES = {
  'memory': ('接续规则 + 来源分层 + 回执设计', '让下一个 Agent 有据可接，避免把旧摘要当成当前事实。'),
 }
 
+from delivery import grouped_cards, matrix, upstream, case_grid
+
 def project_cards():
-    return ''.join(f'<a class="project-card" href="@BASE@projects/{slug}.html"><div class="card-label">{name}<span aria-hidden="true">↗</span></div><h3>{title}</h3><p>{ROLES[slug][1]}</p><p class="role-tag">我的主责：{ROLES[slug][0]}</p><div class="card-bottom">{tags}</div></a>' for slug,name,title,desc,tags in projects)
+    return grouped_cards(projects, ROLES)
 
 
 def note_list():
     return ''.join(f'<a class="note-row" href="@BASE@notes/{slug}.html"><span class="note-category">{cat}</span><div><h3>{title}</h3><p>{desc}</p></div><span class="note-time">约 {length}<span aria-hidden="true"> ↗</span></span></a>' for slug,cat,title,desc,length in notes)
 
 page('index.html','FDE 求职作品集与工程实践','黄智军 的 AI 求职作品集与个人博客：项目案例、实践笔记，以及可核验的 Hermes Agent 开源贡献。',f'''
-<section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="dot"></span> FDE / Forward Deployed Engineer</p><h1>走进业务现场，<br>把<span class="accent">数据和 AI</span><br>接进实际工作。</h1><p class="hero-lead">我是 黄智军，主攻业务现场的系统集成与可维护交付，也做 AI 产品定义与应用开发。从投放中台的业务建模，到网页取数、数据校验与云端看板，再到 Agent 应用和开源修复：我负责理解问题，借助 AI 推进实现，并检查交付结果。</p><div class="hero-actions"><a class="button primary" href="experience.html">看我的工作项目 <span aria-hidden="true">↗</span></a><a class="button" href="#contact">联系我 ↗</a></div><p class="hero-contact"><a href="mailto:xmhuangzhijun@gmail.com">xmhuangzhijun@gmail.com</a><span>微信：xmhuangzhijun</span></p></div>
+<div class="wrap trust-snapshot" aria-label="可核验证据"><a href="contributions.html"><strong>1 项</strong>原始修复获上游采纳</a><a href="evidence/engineering-validation.html"><strong>23 项</strong>本地专项测试通过</a><a href="#projects"><strong>6 个</strong>案例附检查材料</a></div><section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="dot"></span> FDE / Forward Deployed Engineer</p><h1>把网页报表做成<br><span class="accent">可信看板</span>，<br>让 Agent 的结果<br>有据可查。</h1><p class="hero-lead">我是黄智军，求职主方向是 FDE。<strong>没有开放 API 时，接通报表与数据校验；Agent 接入业务时，核对工具执行与最终结果。</strong>我负责问题定义、方案取舍与验收，借助 AI 推进实现。</p><div class="hero-actions"><a class="button primary" href="#verify">查看项目与证明材料 <span aria-hidden="true">↗</span></a><a class="button" href="#contact">联系我 ↗</a></div><p class="hero-contact"><a href="mailto:xmhuangzhijun@gmail.com">xmhuangzhijun@gmail.com</a><span>微信：xmhuangzhijun</span></p></div>
 <aside class="proof-card"><div class="proof-top"><span>一项公开贡献</span><span class="badge">已合入上游</span></div><p class="proof-project">HERMES AGENT</p><h2>让图片超时之后，<br>少一次无效等待。</h2><p>提交视觉请求重试修复，原始贡献由维护者保留作者署名，整合后进入主分支。</p><a class="proof-link" href="notes/vision-timeout.html">读这次改进的来龙去脉 <span aria-hidden="true">↗</span></a><div class="proof-footer">原始贡献 #97572 <span>→</span> 合入 #101570</div></aside></section>
-<section class="wrap capability-strip" aria-label="能力与作品"><div><strong>产品定义</strong><span>需求 → 可用流程 → 验收标准</span></div><div><strong>AI 协作开发</strong><span>Web / API / 数据库 / 部署</span></div><div><strong>Agent 改进</strong><span>实际问题 → 测试 → 上游贡献</span></div></section><section class="wrap section" id="projects"><div class="section-head"><div><p class="eyebrow">SELECTED WORK</p><h2>用作品说明，我能做什么。</h2></div><p>每个案例都有具体场景、我的工作、<br>当前结果和可检查的材料。</p></div><div class="project-grid">{project_cards()}</div></section>
-<section class="wrap proof-band"><div><p class="eyebrow">OPEN SOURCE / 第三方可核验</p><h2>一项原始修复，被 Hermes 上游采纳。</h2><p>我提交 #97572 → 维护者保留署名整合 → #101570 合入主分支。</p></div><div><a class="button primary" href="notes/vision-timeout.html">阅读修复复盘 ↗</a><a class="text-link" href="contributions.html">原始 PR、合入记录与待审提交 →</a></div></section>
+<section class="wrap capability-strip" aria-label="能力与作品"><div><strong>产品定义</strong><span>需求 → 可用流程 → 验收标准</span></div><div><strong>AI 协作开发</strong><span>Web / API / 数据库 / 部署</span></div><div><strong>Agent 改进</strong><span>实际问题 → 测试 → 上游贡献</span></div></section><section class="wrap section" id="projects"><div class="section-head"><div><p class="eyebrow">SELECTED WORK</p><h2>用作品说明，我能做什么。</h2></div><p>每个案例都有具体场景、我的工作、<br>当前结果和可检查的材料。</p></div>{project_cards()}</section>
+{upstream()}
+{matrix(projects)}
 <section class="wrap section notes-section"><div class="section-head"><div><p class="eyebrow">FIELD NOTES</p><h2>把实践写清楚。</h2></div><a class="text-link" href="notes/index.html">全部笔记 →</a></div>{note_list()}</section>
 <section class="wrap about-strip"><p>关注真实场景，愿意动手实现，也认真对待失败。</p><a class="text-link" href="about.html">认识我 →</a></section>''','home')
 
@@ -95,7 +98,7 @@ def article(path, kind, title, lead, body, active='notes', aside=''):
         source_actions = f'<div class="hero-actions" aria-label="项目源码">{source_actions}</div>'
     if path.startswith('projects/'):
         from engineering_portfolio import project_evidence
-        body = project_evidence(Path(path).stem) + body
+        body = case_grid(Path(path).stem) + project_evidence(Path(path).stem) + body
     case_map = {
         'vision-timeout': ('个人 AI 助手 / Hermes', 'assistant', '原始修复 #97572 → 上游整合 #101570', HERMES+'101570', '上游已采纳'),
         'message-order': ('个人 AI 助手 / 微信通道', 'assistant', '我提交的同会话预处理修复 #97743', HERMES+'97743', '公开 PR · 尚未合并'),
@@ -177,7 +180,7 @@ render(page, article, ext, GH, HERMES, note_list)
 from engineering_portfolio import render_engineering
 render_engineering(page, article, ext, GH)
 
-page('projects/index.html','项目与我的职责','工作项目、自有开源与上游二次开发，附具体职责、源码或脱敏验证材料。',f'<section class="wrap listing"><p class="eyebrow">SELECTED WORK</p><h1>项目，和我负责的部分。</h1><p class="listing-lead">从业务问题、实现取舍到结果；每个案例注明归属与证据范围。</p><div class="project-grid">{project_cards()}</div></section>','projects')
+page('projects/index.html','项目与我的职责','工作项目、自有开源与上游二次开发，附具体职责、源码或脱敏验证材料。',f'<section class="wrap listing"><p class="eyebrow">SELECTED WORK</p><h1>项目，和我负责的部分。</h1><p class="listing-lead">从业务问题、实现取舍到结果；每个案例注明归属与证据范围。</p>{project_cards()}</section>','projects')
 from seo import finalize
 finalize(OUT, PAGES)
 
