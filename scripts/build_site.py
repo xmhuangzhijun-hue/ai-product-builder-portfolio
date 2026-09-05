@@ -13,20 +13,23 @@ CONTACT = json.loads((ROOT / 'content/contact.json').read_text(encoding='utf-8')
 def contact_block(base):
     phone = CONTACT.get('phone', '')
     phone_html = f'<a href="tel:{escape(phone, quote=True)}">手机 · {escape(phone)}</a>' if phone else ''
-    return f'''<section class="wrap contact-panel" id="contact"><div><p class="eyebrow">LET’S TALK</p><h2>聊聊你的 AI 产品，<br>也聊聊我能做的事。</h2><p>求职方向：AI 产品经理 / AI 应用开发</p><div class="contact-links"><a href="mailto:{CONTACT['email']}">{CONTACT['email']}</a>{phone_html}<span>微信 · {CONTACT['wechat']}</span></div><p class="contact-hint">添加微信请备注公司或交流主题。</p></div><figure><img src="{base}static/wechat.jpg" alt="XMHUA 的微信二维码，微信号 {CONTACT['wechat']}" width="190" height="190" loading="lazy"><figcaption>扫码添加微信</figcaption></figure></section>'''
+    return f'''<section class="wrap contact-panel" id="contact"><div><p class="eyebrow">LET’S TALK</p><h2>聊聊你的 AI 产品，<br>也聊聊我能做的事。</h2><p>求职方向：FDE（前线部署工程师）/ AI 产品经理 / AI 应用开发</p><div class="contact-links"><a href="mailto:{CONTACT['email']}">{CONTACT['email']}</a>{phone_html}<span>微信 · {CONTACT['wechat']}</span></div><p class="contact-hint">添加微信请备注公司或交流主题。</p></div><figure><img src="{base}static/wechat.jpg" alt="XMHUA 的微信二维码，微信号 {CONTACT['wechat']}" width="190" height="190" loading="lazy"><figcaption>扫码添加微信</figcaption></figure></section>'''
 
 def ext(url, label):
     return f'<a href="{url}" target="_blank" rel="noopener noreferrer">{label}<span aria-hidden="true"> ↗</span></a>'
 
 def page(path, title, description, body, active=''):
+    if path == 'contributions.html':
+        from engineering_portfolio import ownership_overview
+        body = body.replace('<article class="contribution featured">', ownership_overview()+'<article class="contribution featured">')
     depth = path.count('/')
     base = '../' * depth or './'
-    nav = ''.join(f'<a href="{base}{href}"'+(' aria-current="page"' if key == active else '')+f'>{label}</a>' for key, href, label in [('home','index.html','首页'),('projects','index.html#projects','项目'),('notes','notes/index.html','笔记'),('contributions','contributions.html','开源'),('about','about.html','关于')])
+    nav = ''.join(f'<a href="{base}{href}"'+(' aria-current="page"' if key == active else '')+f'>{label}</a>' for key, href, label in [('home','index.html','首页'),('experience','experience.html','经历'),('projects','index.html#projects','项目'),('skills','skills.html','技能'),('notes','notes/index.html','笔记'),('contributions','contributions.html','开源'),('about','about.html','关于')])
     full = f'''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)} · XMHUA</title><meta name="description" content="{escape(description, quote=True)}">
 <meta name="theme-color" content="#f7f9fc"><meta property="og:type" content="{'website' if path == 'index.html' else 'article'}"><meta property="og:title" content="{escape(title, quote=True)} · XMHUA"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:url" content="{ORIGIN}/{path}">
-<link rel="canonical" href="{ORIGIN}/{path}"><link rel="icon" href="{base}static/mark.svg" type="image/svg+xml"><link rel="stylesheet" href="{base}static/site.css"><link rel="stylesheet" href="{base}static/career.css"></head>
+<link rel="canonical" href="{ORIGIN}/{path}"><link rel="icon" href="{base}static/mark.svg" type="image/svg+xml"><link rel="stylesheet" href="{base}static/site.css"><link rel="stylesheet" href="{base}static/career.css"><link rel="stylesheet" href="{base}static/engineering.css"></head>
 <body><a class="skip" href="#main">跳到正文</a><header class="site-header"><a class="brand" href="{base}index.html"><img src="{base}static/mark.svg" alt="" width="30" height="30"><span>XMHUA<span class="brand-sub">AI 产品与应用实践</span></span></a><nav aria-label="主导航">{nav}</nav></header>
 <main id="main">{body.replace('@BASE@',base)}</main>
 {contact_block(base)}<footer class="site-footer"><span>© 2026 XMHUA<span class="footer-sub">产品判断 · 工程实现 · 公开记录</span></span><div>{ext(GH,'GitHub')}<a href="#contact">联系我</a><a href="{base}notes/index.html">实践笔记</a></div></footer></body></html>'''
@@ -35,12 +38,15 @@ def page(path, title, description, body, active=''):
     dest.write_text(full,encoding='utf-8')
 
 projects = [
-    ('blog','AI 协作开发 · 开源产品','把个人博客做成自己每天能用的发布系统。','从展示页面迭代到内容后台、独立 API 和 PostgreSQL；已部署，当前数据库有 61 篇发布文章。','Next.js / Hono / PostgreSQL · 已部署'),
-    ('assistant','AI Agent 应用','让一次自然语言请求，走到可确认的任务结果。','从消息入口、工具调用到异常反馈，围绕个人助手开展产品定义、部署与改进。','产品设计 / 工具集成 / 运行验证'),
-    ('shell','Agent 交互 · 开源项目','让手机也能连接自己的 Agent。','为 DeepSeek Harness 制作交互外壳和局域网登录网关，处理页面可见但会话连不上的问题。','TypeScript / TLS / WebSocket · 早期实现'),
-    ('memory','Agent 记忆与知识管理','换一个工具，仍能接着上次的工作。','用有来源的项目记录和受控更新，处理上下文丢失、旧结论和记忆污染问题。','上下文设计 / 知识管理 / 验证机制'),
+    ('data-dashboard','工作项目 · 自研业务系统','没有开放 API，怎样把网页报表做成可信看板？','授权浏览器取数、字段归一化、重复检测、分批稳定性校验与服务端数据隔离。','Python / pandas / SQLite / FastAPI · 23 项专项测试通过'),
+    ('ad-platform','工作项目 · 产品与前端原型','把投放业务拆成账户、产品、指标和操作流程。','Vite + React 中台原型，复用筛选、排序、粘性列与合计行；提供固定模拟数据体验。','React / TypeScript / Tailwind · 可交互 Demo'),
+    ('blog','自有开源项目 · AI 协作实现','带内容后台和持久化数据的个人博客。','独立 Hono API、PostgreSQL、租户过滤和账号登录；已部署并核对 61 篇发布文章。','Next.js / Hono / PostgreSQL · MIT'),
+    ('assistant','开源二次开发 · 上游贡献','把个人助手的视觉等待和消息乱序修到处理链路。','基于 Hermes 部署和改进；1 项原始修复被上游保留署名采纳，另有公开待审提交。','Python / 异步处理 / 回归测试 · Hermes fork'),
+    ('shell','自有扩展项目 · 基于上游 Harness','给 Agent 加上手机交互外壳和 LAN 登录网关。','UI 插槽接入、TLS 登录、WebSocket 代理与 Host 信任配置；不修改上游源码。','TypeScript / Node.js / TLS · 单人 LAN'),
+    ('memory','自有实践与开源参考实现','把长期项目记录与可追踪执行结果分开管理。','Obsidian 接续实践；公开运行时含事件路由、权限检查、4 类终态与 5 个测试。','Python / 事件与回执 / 知识管理 · 早期参考实现'),
 ]
 notes = [
+    ('data-quality','工作实践 · 数据工程','没有开放 API 时，如何避免“抓到了，但抓错了”？','投放数据看板中的重复分页、BI 补数与两批次稳定性校验。','5 分钟'),
     ('blog-delivery','我的博客 · 上线实践','一个博客，怎样才算真的交付了？','从原博客的部署笔记出发，核对发布内容、数据库和可恢复版本。','5 分钟'),
     ('project-boundaries','我的博客 · AI 协作','用 AI 做博客时，我怎么定义“做完了”？','把开发流程笔记落到内容编辑、发布状态和前后端分工。','5 分钟'),
     ('lan-access','我的开源项目 · 工程复盘','页面打开了，为什么手机上的 Agent 还不能用？','ruoxi-shell 中的登录、TLS 与 WebSocket 接入案例。','4 分钟'),
@@ -58,7 +64,7 @@ def note_list():
     return ''.join(f'<a class="note-row" href="@BASE@notes/{slug}.html"><span class="note-category">{cat}</span><div><h3>{title}</h3><p>{desc}</p></div><span class="note-time">{length}<span aria-hidden="true"> ↗</span></span></a>' for slug,cat,title,desc,length in notes)
 
 page('index.html','AI 产品与应用实践','XMHUA 的 AI 求职作品集与个人博客：项目案例、实践笔记，以及可核验的 Hermes Agent 开源贡献。',f'''
-<section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="dot"></span> XMHUA / AI 产品与应用开发</p><h1>我用 AI 做产品，<br>把<span class="accent">真实问题</span><br>变成可检查的作品。</h1><p class="hero-lead">从自己的博客和个人助手开始：定义需求、协作开发、部署使用，再把遇到的问题修到开源上游。这里是我的项目与实践笔记。</p><div class="hero-actions"><a class="button primary" href="#projects">浏览我的项目 <span aria-hidden="true">↓</span></a><a class="button" href="#contact">联系我 ↗</a></div><p class="hero-contact"><a href="mailto:xmhuangzhijun@gmail.com">xmhuangzhijun@gmail.com</a><span>微信：xmhuangzhijun</span></p></div>
+<section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="dot"></span> FDE · AI 产品经理 · AI 应用开发</p><h1>走进业务现场，<br>把<span class="accent">数据和 AI</span><br>接进实际工作。</h1><p class="hero-lead">我是 XMHUA。从投放中台的业务建模，到网页取数、数据校验与云端看板，再到 Agent 应用和开源修复：我负责理解问题，借助 AI 推进实现，并检查交付结果。</p><div class="hero-actions"><a class="button primary" href="experience.html">看我的工作项目 <span aria-hidden="true">↗</span></a><a class="button" href="#contact">联系我 ↗</a></div><p class="hero-contact"><a href="mailto:xmhuangzhijun@gmail.com">xmhuangzhijun@gmail.com</a><span>微信：xmhuangzhijun</span></p></div>
 <aside class="proof-card"><div class="proof-top"><span>一项公开贡献</span><span class="badge">已合入上游</span></div><p class="proof-project">HERMES AGENT</p><h2>让图片超时之后，<br>少一次无效等待。</h2><p>提交视觉请求重试修复，原始贡献由维护者保留作者署名，整合后进入主分支。</p><a class="proof-link" href="notes/vision-timeout.html">读这次改进的来龙去脉 <span aria-hidden="true">↗</span></a><div class="proof-footer">原始贡献 #97572 <span>→</span> 合入 #101570</div></aside></section>
 <section class="wrap capability-strip" aria-label="能力与作品"><div><strong>产品定义</strong><span>需求 → 可用流程 → 验收标准</span></div><div><strong>AI 协作开发</strong><span>Web / API / 数据库 / 部署</span></div><div><strong>Agent 改进</strong><span>实际问题 → 测试 → 上游贡献</span></div></section><section class="wrap section" id="projects"><div class="section-head"><div><p class="eyebrow">SELECTED WORK</p><h2>用作品说明，我能做什么。</h2></div><p>每个案例都有具体场景、我的工作、<br>当前结果和可检查的材料。</p></div><div class="project-grid">{project_cards()}</div></section>
 <section class="wrap section notes-section"><div class="section-head"><div><p class="eyebrow">FIELD NOTES</p><h2>把实践写清楚。</h2></div><a class="text-link" href="notes/index.html">全部笔记 →</a></div>{note_list()}</section>
@@ -66,6 +72,9 @@ page('index.html','AI 产品与应用实践','XMHUA 的 AI 求职作品集与个
 <section class="wrap about-strip"><p>关注真实场景，愿意动手实现，也认真对待失败。</p><a class="text-link" href="about.html">认识我 →</a></section>''','home')
 
 def article(path, kind, title, lead, body, active='notes', aside=''):
+    if path.startswith('projects/'):
+        from engineering_portfolio import project_evidence
+        body = project_evidence(Path(path).stem) + body
     case_map = {
         'vision-timeout': ('个人 AI 助手 / Hermes', 'assistant', '原始修复 #97572 → 上游整合 #101570', HERMES+'101570', '上游已采纳'),
         'message-order': ('个人 AI 助手 / 微信通道', 'assistant', '我提交的同会话预处理修复 #97743', HERMES+'97743', '公开 PR · 尚未合并'),
@@ -149,4 +158,6 @@ page('404.html','页面不存在','这个地址没有对应页面。','<section 
 (OUT/'.nojekyll').write_text('',encoding='utf-8')
 from portfolio_details import render
 render(page, article, ext, GH, HERMES, note_list)
+from engineering_portfolio import render_engineering
+render_engineering(page, article, ext, GH)
 print(f'Built {len(list(OUT.rglob("*.html")))} HTML pages.')
