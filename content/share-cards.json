@@ -8,8 +8,8 @@
   },
   {
     "path": "projects/assistant.html",
-    "title": "个人 AI 助手：从输入到结果",
-    "description": "Hermes 二次开发：视觉重试、消息顺序与记忆边界；附原始 PR 和上游采纳记录。",
+    "title": "基于 Hermes 的个人助手：从 Obsidian 到记忆与工具执行",
+    "description": "基于 Hermes 的个人助手：产品原则、Obsidian 接入、上下文与 MCP 工具流程，附上游采纳记录。",
     "image": "static/og/projects-assistant.jpg",
     "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/projects/assistant.html"
   },

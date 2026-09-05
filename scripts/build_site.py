@@ -43,7 +43,7 @@ projects = [
     ('data-dashboard','工作项目 · 自研业务系统','没有开放 API，怎样把网页报表做成可信看板？','授权浏览器取数、字段归一化、重复检测、分批稳定性校验与服务端数据隔离。','Python / pandas / SQLite / FastAPI · 23 项专项测试通过'),
     ('ad-platform','工作项目 · 产品与前端原型','把投放业务拆成账户、产品、指标和操作流程。','Vite + React 中台原型，复用筛选、排序、粘性列与合计行；提供固定模拟数据体验。','React / TypeScript / Tailwind · 可交互 Demo'),
     ('blog','自有开源项目 · AI 协作实现','带内容后台和持久化数据的个人博客。','独立 Hono API、PostgreSQL、租户过滤和账号登录；已部署并核对 61 篇发布文章。','Next.js / Hono / PostgreSQL · MIT'),
-    ('assistant','开源二次开发 · 上游贡献','把个人助手的视觉等待和消息乱序修到处理链路。','基于 Hermes 部署和改进；1 项原始修复被上游保留署名采纳，另有公开待审提交。','Python / 异步处理 / 回归测试 · Hermes fork'),
+    ('assistant','开源二次开发 · 上游贡献','基于 Hermes，把 Obsidian、记忆与真实工具接到个人助手。','基于 Hermes 部署和改进；1 项原始修复被上游保留署名采纳，另有公开待审提交。','Python / 异步处理 / 回归测试 · Hermes fork'),
     ('shell','自有扩展项目 · 基于上游 Harness','给 Agent 加上手机交互外壳和 LAN 登录网关。','UI 插槽接入、TLS 登录、WebSocket 代理与 Host 信任配置；不修改上游源码。','TypeScript / Node.js / TLS · 单人 LAN'),
     ('memory','自有实践与开源参考实现','把长期项目记录与可追踪执行结果分开管理。','Obsidian 接续实践；公开运行时含事件路由、权限检查、4 类终态与 5 个测试。','Python / 事件与回执 / 知识管理 · 早期参考实现'),
 ]
@@ -63,7 +63,7 @@ ROLES = {
  'data-dashboard': ('数据链路 + 指标口径 + 交付验收', '让运营少踩重复取数和同名指标口径混用的坑。'),
  'ad-platform': ('业务建模 + 页面流程 + 前端组件', '在接入真实数据前，把操作方式做成可讨论的原型。'),
  'blog': ('内容模型 + 发布流程 + 部署验收', '更新文章与联系方式，不再每次都要修改页面代码。'),
- 'assistant': ('问题复现 + 修复边界 + 上游提交', '减少图片超时后的重复等待，保护同一会话的消息顺序。'),
+ 'assistant': ('产品原则 + 上下文接入 + 工具验收', '减少重复交代背景，让自然输入连接到可核验的个人记录。'),
  'shell': ('交互外壳 + 登录网关 + 连接验证', '解决手机看得到页面、却接不上实时会话的问题。'),
  'memory': ('接续规则 + 来源分层 + 回执设计', '让下一个 Agent 有据可接，避免把旧摘要当成当前事实。'),
 }
@@ -112,13 +112,8 @@ def article(path, kind, title, lead, body, active='notes', aside=''):
         body = f'<section class="case-anchor"><span class="badge neutral">{stage}</span><h2>这篇笔记对应我的哪项实践？</h2><p><a href="../projects/{link}.html">{project} →</a></p><p>{ext(url,evidence)}</p></section>' + body
     page(path,title,lead,f'''<div class="wrap article-shell"><a class="back" href="@BASE@{'notes/index.html' if active=='notes' else 'index.html#projects'}">← {'全部笔记' if active=='notes' else '所有项目'}</a><header class="article-header"><p class="eyebrow">{kind}</p><h1>{title}</h1><p class="article-lead">{lead}</p>{source_actions}<div class="article-meta">黄智军 <span>·</span> 整理于 2026 年 9 月 5 日</div></header><div class="article-grid"><article class="prose">{body}</article><aside class="article-aside">{aside or '<p class="eyebrow">阅读提示</p><p>这是结合公开变更与项目实践整理的复盘。源码与讨论链接位于正文中。</p>'}<div class="aside-nav"><a href="@BASE@contributions.html">开源贡献 ↗</a><a href="@BASE@about.html">关于作者 →</a></div></aside></div></div>''',active)
 
-article('projects/assistant.html','PROJECT · AI AGENT','个人 AI 助手：从输入到结果','围绕个人任务，连接自然语言、相关信息与可执行工具。',f'''
-<h2>要解决的问题</h2><p>对话顺畅只是入口。真正使用助手时，我还需要它知道当前任务、在授权范围内调用工具，并在动作之后说明结果是否生效。图片处理卡住、重复消息或上下文错位，都会直接影响这条使用路径。</p>
-<h2>我负责的工作</h2><p>我定义产品目标与完成标准，设计任务状态、权限和结果反馈；借助 AI 推进开源运行时的集成、部署、调试和复盘。底层以 Hermes 等已有能力为基础，我的工作集中在应用落地及实际使用问题的改进。</p>
-<div class="flow" aria-label="任务流程"><span>用户表达需求</span><b>→</b><span>理解与取上下文</span><b>→</b><span>调用授权工具</span><b>→</b><span>确认结果</span></div>
-<h2>关键取舍：把判断和执行分清楚</h2><p>模型适合理解意图、组织信息和选择下一步。权限检查、状态记录和外部动作是否成功，则需要明确的系统结果支撑。界面和回复也要保留这种区别：接到任务不等于已经完成。</p>
-<h2>从体验问题进入工程细节</h2><p>视觉请求超时后，重复等待同一服务可能继续阻塞会话；媒体消息并发下载时，后发消息可能先进入后续处理。这些问题让我沿用户入口追到内部处理路径，并将改进整理成公开修复。</p><ul><li><a href="../notes/vision-timeout.html">视觉超时：避免再耗尽一个完整等待窗口</a></li><li><a href="../notes/message-order.html">同会话消息：保持预处理顺序</a></li></ul>
-<h2>公开结果与边界</h2><p>视觉超时修复已通过后续 PR 合入上游；消息顺序修复目前仍为 Open。这里展示应用实践与特定修复，不提供私人助手的公开账号，也不把部分工具通过测试等同于所有自然任务均已完成验收。</p><div class="source-box"><strong>可核验资料</strong>{ext(HERMES+'101570','已合入的修复')}{ext(GH+'/hermes-agent','个人 fork')}{ext(GH+'/ai-product-builder-portfolio/blob/main/docs/qinghe-agent.md','原始公开项目说明')}</div>''','projects','<p class="eyebrow">我的工作</p><p>需求与完成标准<br>任务与反馈设计<br>开源能力集成<br>部署、调试与验证</p><p class="eyebrow">关键词</p><p>Agent · Hermes · MCP<br>权限 · 状态 · 回执</p>')
+from assistant_case import render as render_assistant_case
+render_assistant_case(article, GH, HERMES)
 
 article('projects/memory.html','PROJECT · CONTEXT & KNOWLEDGE','Agent 记忆：让下一次工作有据可接','处理跨工具、跨会话中的上下文丢失与旧信息误用。',f'''
 <h2>问题从哪里来</h2><p>项目持续迭代时，新的 AI 会话很容易不知道当前版本，重新尝试已经失败的方案，或者把历史记录当成今天的事实。简单地追加一份越来越长的记忆文件，无法自动解决这些问题。</p>

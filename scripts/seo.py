@@ -23,7 +23,7 @@ def normalize_links(html, path):
 HOOKS={
  'index.html':'FDE 求职作品集：业务集成、数据质量与 Agent 应用交付，附 Hermes 上游采纳记录。',
  'projects/data-dashboard.html':'无开放 API 时的授权网页取数、数据校验与看板交付；附 23 项本地专项测试摘要。',
- 'projects/assistant.html':'Hermes 二次开发：视觉重试、消息顺序与记忆边界；附原始 PR 和上游采纳记录。',
+ 'projects/assistant.html':'基于 Hermes 的个人助手：产品原则、Obsidian 接入、上下文与 MCP 工具流程，附上游采纳记录。',
  'projects/blog.html':'个人博客的内容后台、独立 API 与 PostgreSQL；附开源实现和 61 篇发布文章核对说明。',
  'projects/shell.html':'Agent 手机交互外壳与 LAN 登录网关；附公开源码及 401、403、101 连接实验记录。',
  'projects/memory.html':'项目记忆接续与 Agent 参考运行时；附公开案例、4 类终态和 5 个边界测试。',
