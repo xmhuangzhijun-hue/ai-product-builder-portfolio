@@ -84,6 +84,15 @@ page('index.html','FDE 求职作品集与工程实践','黄智军 的 AI 求职�
 <section class="wrap about-strip"><p>关注真实场景，愿意动手实现，也认真对待失败。</p><a class="text-link" href="about.html">认识我 →</a></section>''','home')
 
 def article(path, kind, title, lead, body, active='notes', aside=''):
+    source_links = {
+        'projects/blog.html': [(GH+'/xmhua-card', '查看开源代码 · GitHub')],
+        'projects/shell.html': [(GH+'/ruoxi-shell', '查看开源代码 · GitHub')],
+        'projects/memory.html': [(GH+'/organic-agent-os', '查看开源参考实现 · GitHub')],
+        'projects/assistant.html': [(GH+'/hermes-agent', '查看我的 Fork · GitHub'), (HERMES+'101570', '查看上游合入记录')],
+    }
+    source_actions = ''.join(f'<a class="button primary" href="{url}" target="_blank" rel="noopener noreferrer">{label} ↗</a>' for url,label in source_links.get(path, []))
+    if source_actions:
+        source_actions = f'<div class="hero-actions" aria-label="项目源码">{source_actions}</div>'
     if path.startswith('projects/'):
         from engineering_portfolio import project_evidence
         body = project_evidence(Path(path).stem) + body
@@ -101,7 +110,7 @@ def article(path, kind, title, lead, body, active='notes', aside=''):
     if active == 'notes' and slug in case_map:
         project, link, evidence, url, stage = case_map[slug]
         body = f'<section class="case-anchor"><span class="badge neutral">{stage}</span><h2>这篇笔记对应我的哪项实践？</h2><p><a href="../projects/{link}.html">{project} →</a></p><p>{ext(url,evidence)}</p></section>' + body
-    page(path,title,lead,f'''<div class="wrap article-shell"><a class="back" href="@BASE@{'notes/index.html' if active=='notes' else 'index.html#projects'}">← {'全部笔记' if active=='notes' else '所有项目'}</a><header class="article-header"><p class="eyebrow">{kind}</p><h1>{title}</h1><p class="article-lead">{lead}</p><div class="article-meta">黄智军 <span>·</span> 整理于 2026 年 9 月 5 日</div></header><div class="article-grid"><article class="prose">{body}</article><aside class="article-aside">{aside or '<p class="eyebrow">阅读提示</p><p>这是结合公开变更与项目实践整理的复盘。源码与讨论链接位于正文中。</p>'}<div class="aside-nav"><a href="@BASE@contributions.html">开源贡献 ↗</a><a href="@BASE@about.html">关于作者 →</a></div></aside></div></div>''',active)
+    page(path,title,lead,f'''<div class="wrap article-shell"><a class="back" href="@BASE@{'notes/index.html' if active=='notes' else 'index.html#projects'}">← {'全部笔记' if active=='notes' else '所有项目'}</a><header class="article-header"><p class="eyebrow">{kind}</p><h1>{title}</h1><p class="article-lead">{lead}</p>{source_actions}<div class="article-meta">黄智军 <span>·</span> 整理于 2026 年 9 月 5 日</div></header><div class="article-grid"><article class="prose">{body}</article><aside class="article-aside">{aside or '<p class="eyebrow">阅读提示</p><p>这是结合公开变更与项目实践整理的复盘。源码与讨论链接位于正文中。</p>'}<div class="aside-nav"><a href="@BASE@contributions.html">开源贡献 ↗</a><a href="@BASE@about.html">关于作者 →</a></div></aside></div></div>''',active)
 
 article('projects/assistant.html','PROJECT · AI AGENT','个人 AI 助手：从输入到结果','围绕个人任务，连接自然语言、相关信息与可执行工具。',f'''
 <h2>要解决的问题</h2><p>对话顺畅只是入口。真正使用助手时，我还需要它知道当前任务、在授权范围内调用工具，并在动作之后说明结果是否生效。图片处理卡住、重复消息或上下文错位，都会直接影响这条使用路径。</p>
