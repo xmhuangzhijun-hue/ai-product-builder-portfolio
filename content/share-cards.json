@@ -92,8 +92,8 @@
   },
   {
     "path": "projects/shell.html",
-    "title": "让手机也能连接自己的 Agent",
-    "description": "Agent 手机交互外壳与 LAN 登录网关；附公开源码及 401、403、101 连接实验记录。",
+    "title": "Agent 手机接入原型：登录与连接已验证，完整体验待验收",
+    "description": "Agent 手机接入原型：附 401/403/101 连接实验，完整手机任务与语音工具整合尚待验收。",
     "image": "static/og/projects-shell.jpg",
     "canonical": "https://xmhuangzhijun-hue.github.io/ai-product-builder-portfolio/projects/shell.html"
   },

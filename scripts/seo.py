@@ -25,7 +25,7 @@ HOOKS={
  'projects/data-dashboard.html':'无开放 API 时的授权网页取数、数据校验与看板交付；附 23 项本地专项测试摘要。',
  'projects/assistant.html':'基于 Hermes 的个人助手：产品原则、Obsidian 接入、上下文与 MCP 工具流程，附上游采纳记录。',
  'projects/blog.html':'个人博客的内容后台、独立 API 与 PostgreSQL；附开源实现和 61 篇发布文章核对说明。',
- 'projects/shell.html':'Agent 手机交互外壳与 LAN 登录网关；附公开源码及 401、403、101 连接实验记录。',
+ 'projects/shell.html':'Agent 手机接入原型：附 401/403/101 连接实验，完整手机任务与语音工具整合尚待验收。',
  'projects/memory.html':'项目记忆接续与 Agent 参考运行时；附公开案例、4 类终态和 5 个边界测试。',
  'projects/ad-platform.html':'投放中台的业务模型与 React 原型；附可操作的固定模拟数据 Demo，注明未完成范围。',
  'projects/builder.html':'Agent 创建与发布的本地底座探索；附流程设计、技术选择和当前实现边界。',
