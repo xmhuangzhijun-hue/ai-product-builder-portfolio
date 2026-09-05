@@ -11,7 +11,7 @@ for item in json.loads((root/'content/share-cards.json').read_text(encoding='utf
     im=Image.new('RGB',(1200,630),'#f7f9fc');d=ImageDraw.Draw(im)
     font=lambda size:ImageFont.truetype(args.font,size)
     d.rectangle((64,63,114,69),fill='#2859df')
-    d.text((64,97),'XMHUA  /  FDE',font=font(27),fill='#2859df')
+    d.text((64,97),'黄智军  /  FDE',font=font(27),fill='#2859df')
     title=item['title'];lines=[];line=''
     for ch in title:
         if d.textlength(line+ch,font=font(50))>1060:lines.append(line);line=''
